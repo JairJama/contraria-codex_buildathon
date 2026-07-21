@@ -8,6 +8,14 @@ const DECISIONS = {
 
 const CONFIDENCE = { low: 'Baja', medium: 'Media', high: 'Alta' };
 
+function sourceHost(url) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
+}
+
 function RiskItem({ item, index }) {
   const severity = item.probability * item.impact;
   const tone = severity >= 16 ? 'bg-rose-400' : severity >= 9 ? 'bg-amber-400' : 'bg-sky-400';
@@ -64,6 +72,24 @@ export default function VerdictPanel({ verdict, metadata, report }) {
           </ul>
         </section>
       </div>
+
+      {verdict.citations?.length ? (
+        <section className="border-t border-slate-800 py-6" aria-labelledby="sources-title">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Evidencia externa</p>
+          <h3 className="mt-1 text-lg font-bold text-white" id="sources-title">Fuentes que informaron el veredicto</h3>
+          <ol className="mt-4 grid gap-3 sm:grid-cols-2">
+            {verdict.citations.slice(0, 2).map((citation) => (
+              <li key={citation.url}>
+                <a className="block rounded-xl border border-slate-800 bg-slate-900/45 p-4 transition hover:border-indigo-400/55 hover:bg-slate-900" href={citation.url} rel="noreferrer" target="_blank">
+                  <span className="text-xs font-bold text-indigo-300">[{citation.id}]</span>
+                  <span className="mt-1 block text-sm font-semibold leading-5 text-slate-200">{citation.title}</span>
+                  <span className="mt-2 block truncate text-xs text-slate-500">{sourceHost(citation.url)} ↗</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
 
       <section className="scroll-mt-28 border-t border-slate-800 pt-6" id="riesgos">
           <div className="flex flex-wrap items-end justify-between gap-2">

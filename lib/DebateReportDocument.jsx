@@ -91,6 +91,7 @@ export default function DebateReportDocument({ input, debate, generatedAt }) {
             <Text style={styles.body}>{verdict.rationale}</Text>
           </View>
         </View>
+        {verdict.citations?.length ? <View style={styles.section}><Text style={styles.sectionTitle}>Fuentes que informaron el veredicto</Text><View style={styles.card}>{verdict.citations.slice(0, 2).map((citation) => <View key={citation.url} style={styles.bulletRow}><Text style={styles.bullet}>[{citation.id}]</Text><Text style={styles.body}>{citation.title} · {citation.url}</Text></View>)}</View></View> : null}
         <View style={[styles.section, styles.row]}>
           <View style={[styles.half, { marginRight: 6 }]}><Text style={styles.sectionTitle}>Caso a favor</Text><View style={styles.card}><BulletList items={verdict.pros} /></View></View>
           <View style={[styles.half, { marginLeft: 6 }]}><Text style={styles.sectionTitle}>Aspectos críticos</Text><View style={styles.card}><BulletList items={verdict.cons} /></View></View>

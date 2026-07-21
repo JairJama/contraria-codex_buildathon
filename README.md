@@ -17,6 +17,7 @@ El caso de demo es **MarAzul**, una plataforma para pescadores artesanales de Ma
 - **Contexto documental:** `unpdf` extrae texto de PDFs aportados por el usuario para convertirlo en evidencia acotada antes del debate.
 - **IA - OpenAI/Codex:** moderador inicial, Tecnología, Riesgo, Crítico y moderador final. Tecnología y el veredicto usan GPT-5.6 Terra con razonamiento medio; Riesgo y Crítico usan GPT-5.6 Luna con razonamiento alto.
 - **IA - DeepSeek:** Estrategia y UX usan DeepSeek V4 Flash sin razonamiento para aportar velocidad y una segunda perspectiva de proveedor.
+- **Evidencia web opcional:** OpenAI consulta fuentes públicas en paralelo con el moderador inicial; se conservan como máximo dos enlaces verificables para informar el veredicto y el reporte.
 - **Hosting:** Vercel.
 - **Control de versiones:** GitHub.
 
@@ -36,9 +37,13 @@ El proyecto no requiere base de datos para la demo: el estado vive durante la se
 
 El endpoint reserva un presupuesto global de 55 segundos dentro de `maxDuration = 60`: limita cada intento, ejecuta las rondas en paralelo, reintenta solo cuando todavía existe margen y devuelve posturas o un veredicto de respaldo si una llamada falla. Así una falla puntual no cancela el debate completo ni expone datos de proveedores al usuario. Los logs de Vercel registran de forma segura el proveedor, fase, agente y tipo de fallo para diagnosticar timeouts, límites de tasa o formatos inválidos, sin registrar claves ni respuestas completas.
 
+La investigación web es optativa y se ejecuta una sola vez, en paralelo con el moderador inicial, con un máximo de 9 segundos y dos fuentes. Si se agota ese presupuesto o falla la consulta, el debate continúa sin evidencia externa; las rondas y el veredicto conservan el presupuesto global de 55 segundos dentro de `maxDuration = 60`.
+
 ## Uso de OpenAI
 
 OpenAI coordina el debate: el moderador inicial estructura la idea, Tecnología, Riesgo y Crítico emiten sus posturas, y el moderador final entrega la síntesis. DeepSeek participa únicamente en Estrategia y UX, con respuestas rápidas y salidas JSON validadas antes de integrarse a cada ronda.
+
+Cuando el usuario activa el contraste web, OpenAI realiza una investigación breve y opcional que entrega hasta dos fuentes verificables como contexto compartido; la síntesis final las conserva para que el usuario pueda abrirlas desde la interfaz o el reporte.
 
 ## Evidencia
 

@@ -17,6 +17,7 @@ export default function IdeaForm() {
   const router = useRouter();
   const [idea, setIdea] = useState('');
   const [context, setContext] = useState('');
+  const [useWebEvidence, setUseWebEvidence] = useState(false);
   const [error, setError] = useState('');
   const [pdfFile, setPdfFile] = useState(null);
   const [isExtractingPdf, setIsExtractingPdf] = useState(false);
@@ -104,7 +105,7 @@ export default function IdeaForm() {
     window.sessionStorage.removeItem('contraria-last-debate');
     window.sessionStorage.setItem(
       'contraria-pending-debate',
-      JSON.stringify({ idea: normalizedIdea, context: finalContext }),
+      JSON.stringify({ idea: normalizedIdea, context: finalContext, useWebEvidence }),
     );
     router.push('/debate');
   };
@@ -230,6 +231,19 @@ export default function IdeaForm() {
                   </div>
                 ) : null}
               </section>
+
+              <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/45 p-4 transition hover:border-indigo-400/40">
+                <input
+                  checked={useWebEvidence}
+                  className="mt-0.5 h-4 w-4 rounded border-slate-600 bg-slate-900 text-indigo-400 focus:ring-indigo-400"
+                  onChange={(event) => setUseWebEvidence(event.target.checked)}
+                  type="checkbox"
+                />
+                <span>
+                  <span className="block text-sm font-medium text-slate-200">Contrastar con fuentes web <span className="font-normal text-slate-500">(opcional)</span></span>
+                  <span className="mt-1 block text-xs leading-5 text-slate-500">Consulta breve en paralelo; añade como máximo 2 fuentes verificables al veredicto.</span>
+                </span>
+              </label>
 
               {error ? <p className="rounded-lg border border-rose-400/25 bg-rose-400/10 px-3 py-2 text-sm text-rose-200" role="alert">{error}</p> : null}
 
