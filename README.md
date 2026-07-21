@@ -32,7 +32,7 @@ El usuario escribe una propuesta o carga el caso MarAzul. El único endpoint, `P
 
 El proyecto no requiere base de datos para la demo: el estado vive durante la sesión. Cada llamada de IA devuelve datos estructurados y validados para que la interfaz pueda mostrarlos de forma fiable.
 
-El endpoint reserva un presupuesto global de 55 segundos dentro de `maxDuration = 60`: limita cada intento, ejecuta las rondas en paralelo, reintenta solo cuando todavía existe margen y devuelve posturas o un veredicto de respaldo si una llamada falla. Así una falla puntual no cancela el debate completo ni expone datos de proveedores al usuario.
+El endpoint reserva un presupuesto global de 55 segundos dentro de `maxDuration = 60`: limita cada intento, ejecuta las rondas en paralelo, reintenta solo cuando todavía existe margen y devuelve posturas o un veredicto de respaldo si una llamada falla. Así una falla puntual no cancela el debate completo ni expone datos de proveedores al usuario. Los logs de Vercel registran de forma segura el proveedor, fase, agente y tipo de fallo para diagnosticar timeouts, límites de tasa o formatos inválidos, sin registrar claves ni respuestas completas.
 
 ## Uso de OpenAI
 
