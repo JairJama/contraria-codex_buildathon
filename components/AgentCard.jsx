@@ -108,16 +108,16 @@ export default function AgentCard({ result, previousResult, phase = 'initial' })
         </div>
       ) : null}
 
-      <div className="mt-4 border-t border-slate-800 pt-4">
+      <div className="mt-5 border-t border-slate-800 pt-5">
         <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">{isReply ? 'Conclusión revisada' : 'Conclusión inicial'}</p>
-        <p className="mt-1.5 text-sm leading-6 text-slate-300">{result.summary}</p>
+        <p className="mt-2 text-[15px] leading-7 text-slate-300">{result.summary}</p>
       </div>
 
-      <div className="mt-4 grid gap-2 sm:grid-cols-2">
+      <div className="mt-5 grid gap-3 lg:grid-cols-2">
         {result.arguments?.slice(0, 2).map((argument, index) => (
-          <div className="rounded-lg bg-slate-900/75 p-3" key={`${argument.claim}-${index}`}>
-            <p className="text-xs font-semibold text-slate-300">{argument.claim}</p>
-            <p className="mt-1 text-xs leading-5 text-slate-500">{argument.reason}</p>
+          <div className="rounded-xl border border-slate-800 bg-slate-900/65 p-3.5" key={`${argument.claim}-${index}`}>
+            <p className="text-sm font-semibold leading-5 text-slate-200">{argument.claim}</p>
+            <p className="mt-1.5 text-xs leading-5 text-slate-400">{argument.reason}</p>
           </div>
         ))}
       </div>

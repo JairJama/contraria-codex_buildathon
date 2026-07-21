@@ -13,16 +13,16 @@ function RiskItem({ item, index }) {
   const tone = severity >= 16 ? 'bg-rose-400' : severity >= 9 ? 'bg-amber-400' : 'bg-sky-400';
 
   return (
-    <li className="rounded-xl border border-slate-800 bg-slate-950/55 p-3">
+    <li className="rounded-2xl border border-slate-800 bg-slate-950/55 p-4">
       <div className="flex items-start justify-between gap-3">
-        <p className="text-sm font-medium text-slate-200">{item.risk}</p>
+        <p className="text-sm font-semibold leading-6 text-slate-200">{item.risk}</p>
         <span className="shrink-0 text-xs text-slate-500">#{index + 1}</span>
       </div>
       <div className="mt-3 flex items-center gap-2">
         <span className={`h-1.5 w-1.5 rounded-full ${tone}`} />
         <span className="text-xs text-slate-400">Prob. {item.probability}/5 · Impacto {item.impact}/5</span>
       </div>
-      <p className="mt-2 text-xs leading-5 text-slate-500"><span className="font-medium text-slate-400">Mitigación:</span> {item.mitigation}</p>
+      <p className="mt-3 text-sm leading-6 text-slate-400"><span className="font-medium text-slate-300">Mitigación:</span> {item.mitigation}</p>
     </li>
   );
 }
@@ -50,38 +50,33 @@ export default function VerdictPanel({ verdict, metadata, report }) {
         </div>
       </div>
 
-      <div className="grid gap-5 py-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-emerald-400/15 bg-emerald-400/[0.035] p-4">
+      <div className="grid gap-5 py-7 lg:grid-cols-2">
+        <section className="rounded-2xl border border-emerald-400/15 bg-emerald-400/[0.035] p-5 sm:p-6">
           <h3 className="text-sm font-semibold text-emerald-200">El caso a favor</h3>
           <ul className="mt-3 space-y-3">
-            {verdict.pros.map((item, index) => <li className="flex gap-2 text-sm leading-6 text-slate-300" key={`${item}-${index}`}><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />{item}</li>)}
+            {verdict.pros.map((item, index) => <li className="flex gap-3 text-sm leading-7 text-slate-300" key={`${item}-${index}`}><span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />{item}</li>)}
           </ul>
         </section>
-        <section className="rounded-2xl border border-rose-400/15 bg-rose-400/[0.035] p-4">
+        <section className="rounded-2xl border border-rose-400/15 bg-rose-400/[0.035] p-5 sm:p-6">
           <h3 className="text-sm font-semibold text-rose-200">Lo que puede romper la idea</h3>
           <ul className="mt-3 space-y-3">
-            {verdict.cons.map((item, index) => <li className="flex gap-2 text-sm leading-6 text-slate-300" key={`${item}-${index}`}><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-rose-400" />{item}</li>)}
+            {verdict.cons.map((item, index) => <li className="flex gap-3 text-sm leading-7 text-slate-300" key={`${item}-${index}`}><span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-rose-400" />{item}</li>)}
           </ul>
         </section>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <section className="scroll-mt-28" id="riesgos">
-          <h3 className="text-sm font-semibold text-white">Riesgos priorizados</h3>
-          <ol className="mt-3 grid gap-3 sm:grid-cols-2">
+      <section className="scroll-mt-28 border-t border-slate-800 pt-6" id="riesgos">
+          <div className="flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Atención prioritaria</p>
+              <h3 className="mt-1 text-lg font-bold text-white">Riesgos que debes vigilar</h3>
+            </div>
+            <span className="text-xs text-slate-500">Probabilidad × impacto</span>
+          </div>
+          <ol className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {verdict.prioritizedRisks.map((item, index) => <RiskItem index={index} item={item} key={`${item.risk}-${index}`} />)}
           </ol>
-        </section>
-        <section className="scroll-mt-28 rounded-2xl border border-indigo-400/25 bg-indigo-400/[0.07] p-5" id="plan-48h">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-indigo-300">Experimento de 48 horas</p>
-          <h3 className="mt-3 text-lg font-bold text-white">{verdict.experiment.hypothesis}</h3>
-          <p className="mt-3 text-sm leading-6 text-slate-300">{verdict.experiment.action}</p>
-          <div className="mt-5 border-t border-indigo-300/15 pt-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-200">Señal de éxito</p>
-            <p className="mt-1.5 text-sm leading-6 text-slate-300">{verdict.experiment.successMetric}</p>
-          </div>
-        </section>
-      </div>
+      </section>
 
       {metadata?.partial ? <p className="mt-6 rounded-xl border border-amber-400/20 bg-amber-400/10 px-3 py-2 text-xs leading-5 text-amber-100">El consejo completó este resultado con una o más respuestas de respaldo por tiempo o disponibilidad del proveedor.</p> : null}
     </section>
