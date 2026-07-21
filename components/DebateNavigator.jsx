@@ -9,7 +9,6 @@ const SECTIONS = [
   ['04', 'Cambios', 'cambios'],
   ['05', 'Veredicto', 'veredicto'],
   ['06', 'Riesgos', 'riesgos'],
-  ['07', 'Plan 48h', 'plan-48h'],
 ];
 
 export default function DebateNavigator() {
