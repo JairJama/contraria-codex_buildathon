@@ -1,1 +1,6 @@
-
+{
+  "id": "marazul",
+  "title": "MarAzul",
+  "idea": "Una plataforma para pescadores artesanales de Manabí que combina clima, precio de mercado y demanda para ayudarles a decidir cuándo conviene salir a pescar.",
+  "context": "El público inicial son pescadores artesanales de Manabí. La propuesta debe funcionar con conectividad variable, información de mercado comprensible y recomendaciones que generen confianza."
+}

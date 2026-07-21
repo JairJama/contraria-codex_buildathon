@@ -1,6 +1,6 @@
 # ContrarIA
 
-ContrarIA es una aplicación web donde un consejo de cinco agentes de IA contrasta una idea de negocio desde estrategia, tecnología, UX, riesgo y crítica. El debate ocurre en dos rondas y termina con un veredicto accionable, riesgos priorizados y un experimento de validación de 48 horas.
+ContrarIA es una aplicación web donde un consejo de cinco agentes de IA contrasta una idea de negocio, producto, servicio o proyecto de desarrollo desde estrategia, tecnología, UX, riesgo y crítica. El debate ocurre en dos rondas y termina con un veredicto accionable, riesgos priorizados, nivel de confianza y un experimento de validación de 48 horas.
 
 ## Problema y solución
 
@@ -13,14 +13,14 @@ El caso de demo es **MarAzul**, una plataforma para pescadores artesanales de Ma
 - **Framework:** Next.js con App Router, frontend y rutas backend en el mismo proyecto.
 - **Lenguaje:** JavaScript.
 - **Estilos:** Tailwind CSS.
-- **IA - OpenAI/Codex:** moderador inicial y síntesis final del veredicto, con salida estructurada.
-- **IA - DeepSeek:** los cinco agentes especialistas del debate; los roles de estrategia y UX priorizan velocidad, mientras que tecnología, riesgo y crítica priorizan razonamiento.
+- **IA - OpenAI/Codex:** moderador inicial, Tecnología, Riesgo, Crítico y moderador final. Tecnología y el veredicto usan GPT-5.6 Terra con razonamiento medio; Riesgo y Crítico usan GPT-5.6 Luna con razonamiento alto.
+- **IA - DeepSeek:** Estrategia y UX usan DeepSeek V4 Flash sin razonamiento para aportar velocidad y una segunda perspectiva de proveedor.
 - **Hosting:** Vercel.
 - **Control de versiones:** GitHub.
 
 ## Demo
 
-🔗 _(URL de demo por completar por el equipo)_
+🔗 [https://contraria-codex-buildathon.vercel.app/](https://contraria-codex-buildathon.vercel.app/)
 
 ## Repositorio
 
@@ -28,13 +28,15 @@ El caso de demo es **MarAzul**, una plataforma para pescadores artesanales de Ma
 
 ## Arquitectura
 
-El usuario escribe una idea o carga el caso MarAzul. Un endpoint de debate transforma esa entrada en un contexto común, reúne en paralelo las posturas iniciales de cinco especialistas y les permite responder a los argumentos cruzados en una segunda ronda. Finalmente, un moderador sintetiza todo el debate en una decisión, puntuación, riesgos y el experimento recomendado.
+El usuario escribe una propuesta o carga el caso MarAzul. El único endpoint, `POST /api/debate`, valida la entrada, transforma la propuesta en un contexto común y ejecuta dos rondas de cinco especialistas en paralelo. En la segunda ronda cada agente considera las posturas de los demás; finalmente, un moderador sintetiza una decisión, puntuación, nivel de confianza, riesgos y un experimento recomendado de 48 horas.
 
-El proyecto no requiere base de datos para la demo: el estado vive durante la sesión. Cada llamada de IA deberá devolver datos estructurados y validados para que la interfaz pueda mostrarlos de forma fiable.
+El proyecto no requiere base de datos para la demo: el estado vive durante la sesión. Cada llamada de IA devuelve datos estructurados y validados para que la interfaz pueda mostrarlos de forma fiable.
+
+El endpoint reserva un presupuesto global de 55 segundos dentro de `maxDuration = 60`: limita cada intento, ejecuta las rondas en paralelo, reintenta solo cuando todavía existe margen y devuelve posturas o un veredicto de respaldo si una llamada falla. Así una falla puntual no cancela el debate completo ni expone datos de proveedores al usuario.
 
 ## Uso de OpenAI
 
-OpenAI/Codex se utiliza como capa de orquestación: estructura la idea al inicio y consolida el debate completo en el veredicto final. Esta separación permite que los especialistas se concentren en sus perspectivas específicas y que la interfaz reciba una respuesta predecible.
+OpenAI coordina el debate: el moderador inicial estructura la idea, Tecnología, Riesgo y Crítico emiten sus posturas, y el moderador final entrega la síntesis. DeepSeek participa únicamente en Estrategia y UX, con respuestas rápidas y salidas JSON validadas antes de integrarse a cada ronda.
 
 ## Evidencia
 
@@ -48,9 +50,9 @@ ContrarIA ayuda a personas con ideas de negocio en etapa temprana a recibir cont
 
 ## Equipo
 
-- _(nombre 1)_
-- _(nombre 2)_
-- _(nombre 3)_
+Saul Ivan Castro Muñoz
+Roosevelt Jair Jama Guaman
+Jandry David Fernandez Cedeño
 
 ## Requisitos
 
@@ -79,18 +81,18 @@ npm run start  # sirve el build de producción
 
 | Variable | Uso | Estado actual |
 | --- | --- | --- |
-| `OPENAI_API_KEY` | Moderador inicial y veredicto final | Pendiente de integración |
-| `DEEPSEEK_API_KEY` | Especialistas del debate | Pendiente de integración |
+| `OPENAI_API_KEY` | Moderadores, Tecnología, Riesgo y Crítico | Definida localmente; falta configurarla en Vercel |
+| `DEEPSEEK_API_KEY` | Estrategia y UX | Definida localmente; falta configurarla en Vercel |
 
-Usa `.env.local` solo en desarrollo. Nunca subas claves reales a Git. En Vercel, crea ambas variables como sensibles para Preview y Production cuando el backend de IA las necesite.
+Usa `.env` o `.env.local` solo en desarrollo. Nunca subas claves reales a Git. En Vercel, crea `OPENAI_API_KEY` y `DEEPSEEK_API_KEY` como variables sensibles para Preview y Production.
 
 ## Despliegue en Vercel
 
 1. Inicia sesión en Vercel y autoriza la integración con GitHub.
 2. Selecciona **Add New → Project** e importa `JairJama/contraria-codex_buildathon`.
 3. Configura el proyecto como `contraria-codex-buildathon`, con framework **Next.js**, directorio raíz `.` y `npm run build` como comando de build.
-4. No agregues claves reales en este primer despliegue: la página principal y `/api/health` no las requieren.
-5. Selecciona **Deploy** y verifica la URL generada junto con `/api/health`.
+4. En **Environment Variables**, agrega `OPENAI_API_KEY` y `DEEPSEEK_API_KEY` como variables sensibles para Preview y Production antes de desplegar el endpoint de debate.
+5. Selecciona **Deploy** y verifica la URL generada junto con `/api/health` y el flujo de debate.
 6. En Project Settings, confirma que `main` sea la Production Branch. Los pushes a `main` crean despliegues de producción; las demás ramas reciben Preview Deployments.
 
 Para comprobar un Preview Deployment:
