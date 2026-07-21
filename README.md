@@ -13,6 +13,7 @@ El caso de demo es **MarAzul**, una plataforma para pescadores artesanales de Ma
 - **Framework:** Next.js con App Router, frontend y rutas backend en el mismo proyecto.
 - **Lenguaje:** JavaScript.
 - **Estilos:** Tailwind CSS.
+- **Reportes:** `@react-pdf/renderer` genera un PDF multipágina bajo demanda a partir del resultado validado del debate.
 - **IA - OpenAI/Codex:** moderador inicial, Tecnología, Riesgo, Crítico y moderador final. Tecnología y el veredicto usan GPT-5.6 Terra con razonamiento medio; Riesgo y Crítico usan GPT-5.6 Luna con razonamiento alto.
 - **IA - DeepSeek:** Estrategia y UX usan DeepSeek V4 Flash sin razonamiento para aportar velocidad y una segunda perspectiva de proveedor.
 - **Hosting:** Vercel.
@@ -28,7 +29,7 @@ El caso de demo es **MarAzul**, una plataforma para pescadores artesanales de Ma
 
 ## Arquitectura
 
-El usuario escribe una propuesta o carga el caso MarAzul. El único endpoint, `POST /api/debate`, valida la entrada, transforma la propuesta en un contexto común y ejecuta dos rondas de cinco especialistas en paralelo. En la segunda ronda cada agente considera las posturas de los demás; finalmente, un moderador sintetiza una decisión, puntuación, nivel de confianza, riesgos y un experimento recomendado de 48 horas.
+El usuario escribe una propuesta o carga el caso MarAzul. `POST /api/debate` valida la entrada, transforma la propuesta en un contexto común y ejecuta dos rondas de cinco especialistas en paralelo. En la segunda ronda cada agente considera las posturas de los demás; finalmente, un moderador sintetiza una decisión, puntuación, nivel de confianza, riesgos y un experimento recomendado de 48 horas. Cuando el resultado está listo, `POST /api/report` vuelve a validar ese contrato y entrega un PDF multipágina descargable, sin almacenar el debate ni llamar a proveedores de IA.
 
 El proyecto no requiere base de datos para la demo: el estado vive durante la sesión. Cada llamada de IA devuelve datos estructurados y validados para que la interfaz pueda mostrarlos de forma fiable.
 

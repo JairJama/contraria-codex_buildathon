@@ -189,7 +189,7 @@ export default function DebatePage() {
               visibleRound2={visibleRound2}
             />
 
-            {showVerdict && data ? <VerdictPanel metadata={data.metadata} verdict={data.verdict} /> : null}
+            {showVerdict && data ? <VerdictPanel metadata={data.metadata} report={{ input, debate: data }} verdict={data.verdict} /> : null}
           </>
         )}
       </div>

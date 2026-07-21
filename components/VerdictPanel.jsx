@@ -1,3 +1,5 @@
+import ReportButton from './ReportButton';
+
 const DECISIONS = {
   advance: { label: 'Avanzar', className: 'border-emerald-400/35 bg-emerald-400/10 text-emerald-200', accent: 'text-emerald-300' },
   pivot: { label: 'Pivotar', className: 'border-amber-400/35 bg-amber-400/10 text-amber-200', accent: 'text-amber-300' },
@@ -25,7 +27,7 @@ function RiskItem({ item, index }) {
   );
 }
 
-export default function VerdictPanel({ verdict, metadata }) {
+export default function VerdictPanel({ verdict, metadata, report }) {
   const decision = DECISIONS[verdict.decision] || DECISIONS.pivot;
 
   return (
@@ -39,9 +41,12 @@ export default function VerdictPanel({ verdict, metadata }) {
           </div>
           <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300">{verdict.rationale}</p>
         </div>
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/70 px-5 py-4 text-right">
+        <div className="flex flex-col gap-3 lg:items-end">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/70 px-5 py-4 text-right">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Puntuación global</p>
           <p className={`mt-1 text-4xl font-bold tracking-tight ${decision.accent}`}>{verdict.overallScore.toFixed(1)}<span className="text-lg text-slate-500">/10</span></p>
+          </div>
+          {report ? <ReportButton input={report.input} debate={report.debate} /> : null}
         </div>
       </div>
 
