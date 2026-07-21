@@ -74,7 +74,7 @@ export default function VerdictPanel({ verdict, metadata, report }) {
             <span className="text-xs text-slate-500">Probabilidad × impacto</span>
           </div>
           <ol className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {verdict.prioritizedRisks.map((item, index) => <RiskItem index={index} item={item} key={`${item.risk}-${index}`} />)}
+            {verdict.prioritizedRisks.slice(0, 3).map((item, index) => <RiskItem index={index} item={item} key={`${item.risk}-${index}`} />)}
           </ol>
       </section>
 
