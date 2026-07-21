@@ -31,7 +31,7 @@ export default function VerdictPanel({ verdict, metadata, report }) {
   const decision = DECISIONS[verdict.decision] || DECISIONS.pivot;
 
   return (
-    <section className="animate-card-in mt-8 rounded-3xl border border-slate-700/80 bg-slate-950/75 p-5 shadow-2xl shadow-indigo-950/20 sm:p-7">
+    <section className="animate-card-in mt-10 scroll-mt-28 rounded-3xl border border-slate-700/80 bg-slate-950/75 p-5 shadow-2xl shadow-indigo-950/20 sm:p-7" id="veredicto">
       <div className="flex flex-col gap-6 border-b border-slate-800 pb-6 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-300">Veredicto del consejo</p>
@@ -66,13 +66,13 @@ export default function VerdictPanel({ verdict, metadata, report }) {
       </div>
 
       <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <section>
+        <section className="scroll-mt-28" id="riesgos">
           <h3 className="text-sm font-semibold text-white">Riesgos priorizados</h3>
           <ol className="mt-3 grid gap-3 sm:grid-cols-2">
             {verdict.prioritizedRisks.map((item, index) => <RiskItem index={index} item={item} key={`${item.risk}-${index}`} />)}
           </ol>
         </section>
-        <section className="rounded-2xl border border-indigo-400/25 bg-indigo-400/[0.07] p-5">
+        <section className="scroll-mt-28 rounded-2xl border border-indigo-400/25 bg-indigo-400/[0.07] p-5" id="plan-48h">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-indigo-300">Experimento de 48 horas</p>
           <h3 className="mt-3 text-lg font-bold text-white">{verdict.experiment.hypothesis}</h3>
           <p className="mt-3 text-sm leading-6 text-slate-300">{verdict.experiment.action}</p>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import DebateTimeline from '@/components/DebateTimeline';
+import DebateNavigator from '@/components/DebateNavigator';
 import VerdictPanel from '@/components/VerdictPanel';
 
 const PHASES = [
@@ -20,7 +21,7 @@ function ContextStrip({ context }) {
   if (!context) return null;
 
   return (
-    <section className="mt-6 grid gap-3 rounded-2xl border border-slate-800 bg-slate-900/45 p-4 sm:grid-cols-3">
+    <section className="mt-6 grid scroll-mt-28 gap-3 rounded-2xl border border-slate-800 bg-slate-900/45 p-4 sm:grid-cols-3" id="contexto">
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.13em] text-slate-500">Problema</p>
         <p className="mt-1 text-sm leading-5 text-slate-300">{shorten(context.problem)}</p>
@@ -166,6 +167,7 @@ export default function DebatePage() {
           </section>
         ) : (
           <>
+            {showVerdict && data ? <DebateNavigator /> : null}
             <section className="pt-10 sm:pt-14">
               <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
                 <div className="max-w-3xl">

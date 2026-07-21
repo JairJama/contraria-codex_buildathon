@@ -17,6 +17,7 @@
 html {
   min-height: 100%;
   background: #080d18;
+  scroll-behavior: smooth;
 }
 
 body {
