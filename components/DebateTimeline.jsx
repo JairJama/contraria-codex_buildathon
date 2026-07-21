@@ -33,7 +33,7 @@ function AgentSequence({ results, previousResults, visibleCount, loading, stage,
           <div className="relative pl-9 sm:pl-12" key={`${phase}-${agent.id}`}>
             <span className="absolute left-0 top-6 flex h-8 w-8 items-center justify-center rounded-full border border-slate-700 bg-slate-950 text-[10px] font-bold text-slate-500 sm:left-1">{String(index + 1).padStart(2, '0')}</span>
             {isVisible ? (
-              <AgentCard phase={phase} previousResult={previousResult} result={result} />
+              <AgentCard phase={phase} previousResult={previousResult} result={result} roundOneResults={previousResults} />
             ) : (
               <AgentPlaceholder
                 agent={agent}
